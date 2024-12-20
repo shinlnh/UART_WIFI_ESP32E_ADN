@@ -34,7 +34,12 @@ void handleDataRequest() {
   server.send(200, "text/plain", dataBuffer); // Send buffer content to client
   Serial.println("Data sent to client.");
 }
-
+// Function to print the UART buffer to Serial Monitor
+void printBufferToSerial() {
+  Serial.println("[UART Data]");
+  Serial.println(dataBuffer);
+  Serial.println("--------------------");
+}
 void setup() {
   Serial.begin(115200);  // Debug output
   Serial.println("Starting ESP32 and UART1...");
@@ -69,8 +74,8 @@ void loop() {
   // Continuously read UART data
 
   while (Serial1.available()) {
-    char c = Serial1.read();
-
+    Serial1.readString().toCharArray(dataBuffer,4096);
+    /*
     // If we reach the end marker '!' or buffer is full
     if (c == '!' || bufferIndex >= BUFFER_SIZE - 1) {
       dataBuffer[bufferIndex] = '\0'; // End the string
@@ -81,8 +86,10 @@ void loop() {
       break; // Exit the loop
     } else {
       dataBuffer[bufferIndex++] = c; // Add character to buffer
-    }
+    }*/
       //Serial.println(WiFi.localIP());
    // delay(500);
+       // Print buffer content to Serial Monitor
+    printBufferToSerial();
   }
 }
